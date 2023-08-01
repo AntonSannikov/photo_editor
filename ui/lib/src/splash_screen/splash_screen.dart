@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:good_lib/good_lib.dart';
 import 'package:ui/resources/screen_resources.dart';
+import 'package:ui/src/canvas_screen/widgets/side_tools_panel/side_tools_panel_resources.dart';
 
 class SplashScreen extends GScreen {
   SplashScreen({
@@ -17,10 +18,12 @@ class _SplashScreenState extends GScreenState<SplashScreen, Object> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final mediaQuery = MediaQuery.of(context);
-    ScreenResources.screenWidth = mediaQuery.size.width;
-    ScreenResources.screenHeight = mediaQuery.size.height;
-    ScreenResources.statusBarHeight = mediaQuery.viewPadding.top;
+    ScreenResources.calculate(MediaQuery.of(context));
+    SideToolsPanelResources.calculate(
+        screenWidth: ScreenResources.screenWidth,
+        screenHeight: ScreenResources.screenHeight,
+        statusBarHeight: ScreenResources.statusBarHeight,
+        bottomBarHeight: ScreenResources.bottomBarHeight);
   }
 
   @override

@@ -1,6 +1,14 @@
+import 'package:flutter/material.dart';
+
 abstract class ScreenResources {
-  static double screenWidth = 0.0;
-  static double screenHeight = 0.0;
-  static double statusBarHeight = 0.0;
-  static double bottomBarHeight = 80.0;
+  static late final double screenWidth;
+  static late final double screenHeight;
+  static late final double statusBarHeight;
+  static const double bottomBarHeight = 80.0;
+
+  static void calculate(MediaQueryData mediaQuery) {
+    screenWidth = mediaQuery.size.width;
+    screenHeight = mediaQuery.size.height;
+    statusBarHeight = mediaQuery.viewPadding.top;
+  }
 }

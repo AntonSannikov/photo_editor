@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:good_lib/good_lib.dart';
-import 'package:ui/src/canvas_screen/widgets/side_tools_panel.dart';
+import 'package:ui/src/canvas_screen/widgets/side_tools_panel/side_tools_panel.dart';
 
 sealed class CanvasScreenCondition {}
 
