@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:ui/resources/screen.dart';
+import 'package:ui/resources/screen_resources.dart';
 import 'package:ui/src/canvas_screen/widgets/drag_handle.dart';
 
 class SideToolsPanel extends StatefulWidget {
@@ -15,12 +15,18 @@ class _SideToolsPanelState extends State<SideToolsPanel> with SingleTickerProvid
   final panelWidth = ScreenResources.screenWidth / 5;
   final panelHeight = ScreenResources.screenHeight;
   late final panelWidthOffset = panelWidth / 4;
-  final dragAreaHeight = ScreenResources.screenHeight / 7.5;
+  final dragAreaHeight = ScreenResources.screenHeight / 7.3;
   final dragHandleWidth = ScreenResources.screenWidth / 12;
   final dragHandleHeight = ScreenResources.screenHeight / 12;
-  late final dragHandleTopPos =
-      (ScreenResources.screenHeight - ScreenResources.appBarHeight - ScreenResources.bottomBatHeight - kToolbarHeight - dragHandleHeight) /
+  late final dragAreaTopPos =
+      (ScreenResources.screenHeight - ScreenResources.statusBarHeight - kToolbarHeight - ScreenResources.bottomBarHeight - dragAreaHeight) /
           2;
+  late final dragHandleTopPos = (ScreenResources.screenHeight -
+          ScreenResources.statusBarHeight -
+          kToolbarHeight -
+          ScreenResources.bottomBarHeight -
+          dragHandleHeight) /
+      2;
   late final dragHandleRightPos = panelWidth - panelWidthOffset - dragHandleWidth / 2;
 
   double panelDxOffset = 0.0;
@@ -65,7 +71,11 @@ class _SideToolsPanelState extends State<SideToolsPanel> with SingleTickerProvid
             width: panelWidth,
             height: panelHeight,
             child: ClipPath(
-              clipper: SideToolsPanelClipper(panelWidthOffset, dragAreaHeight),
+              clipper: SideToolsPanelClipper(
+                widthOffset: panelWidthOffset,
+                dragAreaHeight: dragAreaHeight,
+                dragAreaTopPos: dragAreaTopPos,
+              ),
               child: BackdropFilter(
                 filter: ImageFilter.blur(
                   sigmaX: 3.0,
@@ -97,16 +107,18 @@ class _SideToolsPanelState extends State<SideToolsPanel> with SingleTickerProvid
 class SideToolsPanelClipper extends CustomClipper<Path> {
   final double widthOffset;
   final double dragAreaHeight;
+  final double dragAreaTopPos;
 
-  SideToolsPanelClipper(this.widthOffset, this.dragAreaHeight);
+  SideToolsPanelClipper({
+    required this.widthOffset,
+    required this.dragAreaHeight,
+    required this.dragAreaTopPos,
+  });
 
   @override
   Path getClip(Size size) {
     final width = size.width;
     final height = size.height;
-    final dragAreaTopPos =
-        (ScreenResources.screenHeight - ScreenResources.appBarHeight - ScreenResources.bottomBatHeight - kToolbarHeight - dragAreaHeight) /
-            2;
     final path = Path();
     path.moveTo(widthOffset, 0);
     path.lineTo(widthOffset, dragAreaTopPos);

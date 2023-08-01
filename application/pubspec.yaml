@@ -20,8 +20,7 @@ dependencies:
   # https://pub.dev/packages/injectable
   injectable: ^2.1.2
 
-  ui:
-    path: ../ui
+
   
 
 dev_dependencies:

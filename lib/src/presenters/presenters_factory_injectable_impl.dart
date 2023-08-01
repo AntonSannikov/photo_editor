@@ -1,8 +1,8 @@
-import 'package:application/src/di/injection.dart';
-import 'package:application/src/presenters/global_state_impl.dart';
-import 'package:application/src/presenters/impls/root.dart';
-import 'package:application/src/presenters/interfaces.dart';
 import 'package:good_lib/good_lib.dart';
+import 'package:photo_editor/src/di/injection.dart';
+import 'package:photo_editor/src/presenters/global_state_impl.dart';
+import 'package:photo_editor/src/presenters/impls/root.dart';
+import 'package:photo_editor/src/presenters/interfaces.dart';
 
 class AppPresentersFactory extends GPresenterFactory<AppPresentersGlobalState> {
   @override

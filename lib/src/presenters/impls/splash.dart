@@ -1,8 +1,8 @@
-import 'package:application/src/entrypoint.dart';
-import 'package:application/src/presenters/interfaces.dart';
 import 'package:flutter/material.dart';
 import 'package:good_lib/good_lib.dart';
 import 'package:injectable/injectable.dart';
+import 'package:photo_editor/src/entrypoint.dart';
+import 'package:photo_editor/src/presenters/interfaces.dart';
 import 'package:ui/ui.dart';
 
 @Injectable(as: ISplashPresenter)

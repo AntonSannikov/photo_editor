@@ -1,1 +1,1 @@
-export 'src/entrypoint.dart';
+

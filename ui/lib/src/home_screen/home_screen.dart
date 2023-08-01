@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:good_lib/good_lib.dart';
-import 'package:ui/resources/screen.dart';
 
 class HomeScreen extends GScreen {
   final Widget navigationWidget;
@@ -27,18 +26,8 @@ class HomeScreen extends GScreen {
 }
 
 class _HomeScreenState extends GScreenState<HomeScreen, Object> {
-  bool isMeasured = false;
-
-  void measureScreen() {
-    ScreenResources.appBarHeight = MediaQuery.of(context).padding.top;
-    isMeasured = true;
-  }
-
   @override
   Widget build(BuildContext context) {
-    if (!isMeasured) {
-      WidgetsBinding.instance.addPostFrameCallback((_) => measureScreen());
-    }
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.appBarTitle),

@@ -1,6 +1,6 @@
-import 'package:application/src/presenters/navigation/nav2_core.dart';
 import 'package:flutter/material.dart';
 import 'package:good_lib/good_lib.dart';
+import 'package:photo_editor/src/presenters/navigation/nav2_core.dart';
 
 class ShellNavigationDelegate2 extends GPresenterNavigationDelegate {
   late final routerDelegate = AppRouterDelegate(

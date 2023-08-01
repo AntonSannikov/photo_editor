@@ -1,11 +1,11 @@
-import 'package:application/src/di/injection.dart';
-import 'package:application/src/presenters/global_state_impl.dart';
-import 'package:application/src/presenters/presenters_factory_injectable_impl.dart';
-import 'package:application/src/presenters/interfaces.dart';
-import 'package:application/src/presenters/navigation/presenter_delegates_impl.dart';
-import 'package:application/src/presenters/impls/root.dart';
 import 'package:flutter/material.dart';
 import 'package:good_lib/good_lib.dart';
+import 'package:photo_editor/src/di/injection.dart';
+import 'package:photo_editor/src/presenters/global_state_impl.dart';
+import 'package:photo_editor/src/presenters/impls/root.dart';
+import 'package:photo_editor/src/presenters/interfaces.dart';
+import 'package:photo_editor/src/presenters/navigation/presenter_delegates_impl.dart';
+import 'package:photo_editor/src/presenters/presenters_factory_injectable_impl.dart';
 
 enum SplashState { initialized }
 

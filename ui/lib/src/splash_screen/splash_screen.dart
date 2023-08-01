@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:good_lib/good_lib.dart';
-import 'package:ui/resources/screen.dart';
+import 'package:ui/resources/screen_resources.dart';
 
 class SplashScreen extends GScreen {
   SplashScreen({
@@ -17,9 +17,10 @@ class _SplashScreenState extends GScreenState<SplashScreen, Object> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final size = MediaQuery.of(context).size;
-    ScreenResources.screenWidth = size.width;
-    ScreenResources.screenHeight = size.height;
+    final mediaQuery = MediaQuery.of(context);
+    ScreenResources.screenWidth = mediaQuery.size.width;
+    ScreenResources.screenHeight = mediaQuery.size.height;
+    ScreenResources.statusBarHeight = mediaQuery.viewPadding.top;
   }
 
   @override

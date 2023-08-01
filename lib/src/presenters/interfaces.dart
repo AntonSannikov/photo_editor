@@ -1,7 +1,7 @@
-import 'package:application/src/entrypoint.dart';
-import 'package:application/src/presenters/global_state_impl.dart';
 import 'package:flutter/foundation.dart';
 import 'package:good_lib/good_lib.dart';
+import 'package:photo_editor/src/entrypoint.dart';
+import 'package:photo_editor/src/presenters/global_state_impl.dart';
 
 final defaultConditionNotifier = ValueNotifier(Object());
 

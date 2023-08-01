@@ -31,12 +31,26 @@ dependencies:
   flutter:
     sdk: flutter
   cupertino_icons: ^1.0.2
+  good_lib:
+    git:
+      url: https://github.com/AntonSannikov/good_lib.git
+      ref: master
   application:
     path: ./application
+  ui:
+    path: ./ui
+  # https://pub.dev/packages/get_it  
+  get_it: ^7.6.0
+  # https://pub.dev/packages/injectable
+  injectable: ^2.1.2
+
+  
   
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  injectable_generator:  
+  build_runner:
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

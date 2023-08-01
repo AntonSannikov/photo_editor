@@ -34,20 +34,18 @@ class _CanvasScreenState extends GScreenState<CanvasScreen, CanvasScreenConditio
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(
-              child: Align(
-            alignment: Alignment.centerRight,
-            child: Text('CANVAS SCREEN'),
-          )),
-          Positioned(
-            right: 0.0,
-            child: SideToolsPanel(),
-          ),
-        ],
-      ),
+    return const Stack(
+      children: [
+        Positioned.fill(
+            child: Align(
+          alignment: Alignment.centerRight,
+          child: Text('CANVAS SCREEN'),
+        )),
+        Positioned(
+          right: 0.0,
+          child: SideToolsPanel(),
+        ),
+      ],
     );
   }
 }
