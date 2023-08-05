@@ -1,8 +1,11 @@
-import 'dart:ui';
+import 'dart:ui' as ui;
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:ui/src/canvas_screen/widgets/side_tools_panel/side_tools_panel_resources.dart';
+import 'package:good_lib/good_lib.dart';
+import 'package:ui/src/canvas_screen/resources.dart';
 import 'package:ui/src/canvas_screen/widgets/side_tools_panel/drag_handle.dart';
+import 'package:ui/src/canvas_screen/widgets/side_tools_panel/tool_button.dart';
 
 class SideToolsPanel extends StatefulWidget {
   const SideToolsPanel({Key? key}) : super(key: key);
@@ -11,7 +14,14 @@ class SideToolsPanel extends StatefulWidget {
   State<SideToolsPanel> createState() => _SideToolsPanelState();
 }
 
-typedef R = SideToolsPanelResources;
+enum SidePanelToolButtonId {
+  bars,
+  fullscreen,
+  brightness,
+  constants,
+  exposure,
+  mono,
+}
 
 enum SidePanelState {
   opened,
@@ -21,7 +31,8 @@ enum SidePanelState {
   animating,
 }
 
-class _SideToolsPanelState extends State<SideToolsPanel> with SingleTickerProviderStateMixin {
+class _SideToolsPanelState extends State<SideToolsPanel>
+    with WidgetResourcesMixin<SideToolsPanel, SideToolsPanelResources>, SingleTickerProviderStateMixin {
   double panelDxOffset = 0.0;
   SidePanelState panelState = SidePanelState.opened;
 
@@ -31,7 +42,17 @@ class _SideToolsPanelState extends State<SideToolsPanel> with SingleTickerProvid
   @override
   void initState() {
     super.initState();
+    registerResources(SideToolsPanelResources());
+    if (panelState == SidePanelState.closed) {
+      panelDxOffset = r.closedPanelOffset;
+    }
     animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 200));
+  }
+
+  @override
+  void dispose() {
+    animationController?.dispose();
+    super.dispose();
   }
 
   void resetAnimatinController() {
@@ -43,7 +64,7 @@ class _SideToolsPanelState extends State<SideToolsPanel> with SingleTickerProvid
 
   void animatePanelClosing() {
     resetAnimatinController();
-    updateOpenCloseAnimation(Tween<double>(begin: panelDxOffset, end: R.closedPanelDxOffset));
+    updateOpenCloseAnimation(Tween<double>(begin: panelDxOffset, end: r.closedPanelOffset));
     animationController?.forward().then((_) => setPanelState(SidePanelState.closed));
   }
 
@@ -62,12 +83,6 @@ class _SideToolsPanelState extends State<SideToolsPanel> with SingleTickerProvid
 
   void setPanelState(SidePanelState state) => panelState = state;
 
-  @override
-  void dispose() {
-    animationController?.dispose();
-    super.dispose();
-  }
-
   void onDragEnd(DragEndDetails _) {
     if (panelState == SidePanelState.closing) {
       animatePanelOpening();
@@ -78,7 +93,6 @@ class _SideToolsPanelState extends State<SideToolsPanel> with SingleTickerProvid
 
   void onDrag(DragUpdateDetails details) {
     final direction = details.delta.dx.sign;
-
     if (direction == 1.0 && panelState == SidePanelState.closed ||
         direction == -1.0 && panelState == SidePanelState.opened ||
         panelState == SidePanelState.animating) {
@@ -86,17 +100,17 @@ class _SideToolsPanelState extends State<SideToolsPanel> with SingleTickerProvid
     }
     if (direction == 1.0) {
       setPanelState(SidePanelState.closing);
-      if (panelDxOffset >= R.panelDragAnimationDxOffsetBound) {
-        animatePanelClosing();
+      if (panelDxOffset >= r.panelDragAnimationOffsetTrigger) {
+        return animatePanelClosing();
       }
-      if (panelDxOffset >= R.closedPanelDxOffset) {
-        panelDxOffset = R.closedPanelDxOffset;
+      if (panelDxOffset >= r.closedPanelOffset) {
+        panelDxOffset = r.closedPanelOffset;
         setPanelState(SidePanelState.closed);
         return;
       }
     } else if (direction == -1.0) {
       panelState = SidePanelState.opening;
-      if (R.closedPanelDxOffset - panelDxOffset >= R.panelDragAnimationDxOffsetBound) {
+      if (r.closedPanelOffset - panelDxOffset >= r.panelDragAnimationOffsetTrigger) {
         animatePanelOpening();
       }
       if (panelDxOffset <= 0.0) {
@@ -105,7 +119,7 @@ class _SideToolsPanelState extends State<SideToolsPanel> with SingleTickerProvid
         return;
       }
     }
-    panelDxOffset += direction * R.dragVelocity;
+    panelDxOffset += direction * r.dragVelocity;
     setState(() {});
   }
 
@@ -120,39 +134,77 @@ class _SideToolsPanelState extends State<SideToolsPanel> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: R.panelWidth,
-      height: R.panelHeight,
+      width: r.panelSize.width,
+      height: r.panelSize.height,
       child: Stack(
         children: [
           Positioned(
             right: -panelDxOffset,
-            width: R.panelWidth,
-            height: R.panelHeight,
+            width: r.panelSize.width,
+            height: r.panelSize.height,
             child: ClipPath(
               clipper: SideToolsPanelClipper(
-                widthOffset: R.panelWidthOffset,
-                dragAreaHeight: R.dragAreaHeight,
-                dragAreaTopPos: R.dragAreaTopPos,
+                widthOffset: r.panelClipWidth,
+                dragAreaHeight: r.dragAreaHeight,
+                dragAreaTopPos: r.dragAreaTopPos,
               ),
               child: BackdropFilter(
-                filter: ImageFilter.blur(
+                filter: ui.ImageFilter.blur(
                   sigmaX: 3.0,
                   sigmaY: 3.0,
                 ),
-                child: Container(color: Colors.black.withOpacity(0.2)),
+                child: Container(
+                  alignment: Alignment.topRight,
+                  color: Colors.black.withOpacity(0.2),
+                  child: SizedBox(
+                      width: r.toolsAreaSize.width,
+                      height: r.toolsAreaSize.height,
+                      child: SidePanelToolButtonList(
+                        iconSize: r.toolsAreaSize.width / 2,
+                        splashRadius: 30.0,
+                        rippleShaderAsset: r.rippleShaderAsset,
+                        items: [
+                          SidePanelToolButtonModel(
+                            id: SidePanelToolButtonId.bars,
+                            icon: Icons.open_in_full_rounded,
+                          ),
+                          SidePanelToolButtonModel(
+                            id: SidePanelToolButtonId.fullscreen,
+                            icon: Icons.aspect_ratio_sharp,
+                          ),
+                          SidePanelToolButtonModel(
+                            id: SidePanelToolButtonId.brightness,
+                            icon: Icons.brightness_3_outlined,
+                          ),
+                          SidePanelToolButtonModel(
+                            id: SidePanelToolButtonId.constants,
+                            icon: Icons.contrast,
+                          ),
+                          SidePanelToolButtonModel(
+                            id: SidePanelToolButtonId.exposure,
+                            icon: Icons.exposure,
+                          ),
+                          SidePanelToolButtonModel(
+                            id: SidePanelToolButtonId.mono,
+                            icon: Icons.monochrome_photos,
+                          ),
+                        ],
+                      )),
+                ),
               ),
             ),
           ),
           Positioned(
-            top: R.dragHandleTopPos,
-            right: R.dragHandleRightPos - panelDxOffset,
+            top: r.dragHandleTopPos,
+            right: r.dragHandleRightPos - panelDxOffset,
             child: GestureDetector(
+              dragStartBehavior: DragStartBehavior.down,
               onHorizontalDragUpdate: onDrag,
               onHorizontalDragEnd: onDragEnd,
               onTap: onDragHandleTap,
               child: DragHandle(
                 color: Colors.grey.shade800,
-                size: Size(R.dragHandleWidth, R.dragHandleHeight),
+                size: Size(r.dragHandleSize.width, r.dragHandleSize.height),
               ),
             ),
           ),

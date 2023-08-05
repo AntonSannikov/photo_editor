@@ -43,6 +43,9 @@ dependencies:
   get_it: ^7.6.0
   # https://pub.dev/packages/injectable
   injectable: ^2.1.2
+  
+
+  
 
   
   
@@ -69,6 +72,9 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  shaders:
+    - ui/shaders/ripple.frag
+    - ui/shaders/barrel_distortion.frag
 
   # To add assets to your application, add an assets section, like this:
   # assets:

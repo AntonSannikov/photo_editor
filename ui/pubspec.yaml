@@ -15,7 +15,10 @@ dependencies:
     git:
       url: https://github.com/AntonSannikov/good_lib.git
       ref: master 
-
+  # https://pub.dev/packages/path_provider
+  path_provider: ^2.0.15
+  # https://pub.dev/packages/image
+  image: ^4.0.17
 
 dev_dependencies:
   flutter_test:

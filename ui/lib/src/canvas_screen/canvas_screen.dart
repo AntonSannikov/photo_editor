@@ -2,28 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:good_lib/good_lib.dart';
 import 'package:ui/src/canvas_screen/widgets/side_tools_panel/side_tools_panel.dart';
 
-sealed class CanvasScreenCondition {}
+sealed class CanvasScreenState {}
 
-final class CanvasDefault extends CanvasScreenCondition {}
+final class CanvasDefault extends CanvasScreenState {}
 
-final class CanvasLoading extends CanvasScreenCondition {}
+final class CanvasLoading extends CanvasScreenState {}
 
-class CanvasScreen extends GScreen<CanvasScreenCondition> {
-  CanvasScreen({
+class CanvasScreen extends GScreen<CanvasScreenState> {
+  const CanvasScreen({
     super.key,
-    required super.$screenCondition,
-    super.onLifecycleStateChange$,
+    required super.screenController,
   });
 
   @override
-  _CanvasScreenState createState() => _CanvasScreenState();
+  State<CanvasScreen> createState() => _CanvasScreenState();
 }
 
-class _CanvasScreenState extends GScreenState<CanvasScreen, CanvasScreenCondition> {
+class _CanvasScreenState extends GScreenState<CanvasScreen, CanvasScreenState> {
   @override
-  void onConditionChange(CanvasScreenCondition state) async {
-    super.onConditionChange(state);
-
+  void onScreenStateChange(CanvasScreenState state) async {
     switch (state) {
       case CanvasDefault _:
         break;
@@ -37,10 +34,15 @@ class _CanvasScreenState extends GScreenState<CanvasScreen, CanvasScreenConditio
     return const Stack(
       children: [
         Positioned.fill(
-            child: Align(
-          alignment: Alignment.centerRight,
-          child: Text('CANVAS SCREEN'),
-        )),
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: Column(
+              children: [
+                Text('CANVAS SCREEN'),
+              ],
+            ),
+          ),
+        ),
         Positioned(
           right: 0.0,
           child: SideToolsPanel(),

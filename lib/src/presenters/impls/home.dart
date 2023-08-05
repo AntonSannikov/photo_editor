@@ -1,35 +1,35 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:good_lib/good_lib.dart';
 import 'package:injectable/injectable.dart';
-import 'package:photo_editor/src/entrypoint.dart';
 import 'package:photo_editor/src/presenters/interfaces.dart';
 import 'package:ui/ui.dart';
 
 @Injectable(as: IHomePresenter)
 class HomePresenterImpl extends IHomePresenter {
-  @override
-  late ValueListenable<String> $appBarTitle;
+  late final screenController = GScreenController(onLifecycleChange$: onLifecycleStateChange);
 
-  int _tabIndex = 0;
+  final $appBarTitle = ValueNotifier('home');
+  final $tabIndex = ValueNotifier(0);
 
   @override
   void dispose() {}
 
   @override
-  void onChildRouteChanged(HomeState state) {
-    switch (state) {
+  void onChildRouteChange(HomeState value) {
+    switch (value) {
       case HomeState.showCanvasTab:
-        _tabIndex = 0;
+        $appBarTitle.value = 'Canvas';
+        $tabIndex.value = 0;
         break;
       case HomeState.showSettingsTab:
-        _tabIndex = 1;
+        $appBarTitle.value = 'Settings';
+        $tabIndex.value = 1;
         break;
       default:
     }
   }
 
-  void onLifecycleStateChange(GWidgetLifecycle state) {
+  void onLifecycleStateChange(GWidgetLifecycle state, BuildContext ctx) {
     switch (state) {
       case GWidgetLifecycle.didChangeDependencies:
         break;
@@ -52,13 +52,12 @@ class HomePresenterImpl extends IHomePresenter {
 
   @override
   Widget uiBuilder() => HomeScreen(
+        screenController: screenController,
         navigationWidget: navigationWidget,
-        onCameraButtonTap: onCameraButtonTap,
-        onGalleryButtonTap: onGalleryButtonTap,
-        onBottomBarTap: onBottomBarTap,
-        appBarTitle: $appBarTitle.value,
-        tabIndex: _tabIndex,
-        $screenCondition: defaultConditionNotifier,
-        onLifecycleStateChange$: onLifecycleStateChange,
+        onCameraButtonTap$: onCameraButtonTap,
+        onGalleryButtonTap$: onGalleryButtonTap,
+        onBottomBarTap$: onBottomBarTap,
+        $appBarTitle: $appBarTitle,
+        $tabIndex: $tabIndex,
       );
 }

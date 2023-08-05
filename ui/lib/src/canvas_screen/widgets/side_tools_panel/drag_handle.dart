@@ -34,8 +34,8 @@ class DragHandlePainter extends CustomPainter {
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round;
     final path = Path();
-    path.moveTo(width / 2, 0);
-    path.quadraticBezierTo(0, height / 2, width / 2, height);
+    path.moveTo(width, 0);
+    path.quadraticBezierTo(width / 4, height / 2, width, height);
     canvas.drawPath(path, paint);
   }
 
