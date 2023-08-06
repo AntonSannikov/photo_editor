@@ -21,7 +21,7 @@ class SplashPresenterImpl extends ISplashPresenter {
   }
 
   Future<void> loadAssets(BuildContext ctx) async {
-    DeviceScreenResources.calculate(MediaQuery.of(ctx));
+    ScreenResourcesCalculator.calculate(ctx);
     await Future.delayed(const Duration(seconds: 2));
     setNavigationState(SplashState.initialized);
   }

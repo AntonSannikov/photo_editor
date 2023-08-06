@@ -43,10 +43,7 @@ class _CanvasScreenState extends GScreenState<CanvasScreen, CanvasScreenState> {
             ),
           ),
         ),
-        Positioned(
-          right: 0.0,
-          child: SideToolsPanel(),
-        ),
+        SideToolsPanel(),
       ],
     );
   }

@@ -133,82 +133,78 @@ class _SideToolsPanelState extends State<SideToolsPanel>
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
+    return Positioned(
+      right: -panelDxOffset,
       width: r.panelSize.width,
       height: r.panelSize.height,
-      child: Stack(
-        children: [
-          Positioned(
-            right: -panelDxOffset,
-            width: r.panelSize.width,
-            height: r.panelSize.height,
-            child: ClipPath(
-              clipper: SideToolsPanelClipper(
-                widthOffset: r.panelClipWidth,
-                dragAreaHeight: r.dragAreaHeight,
-                dragAreaTopPos: r.dragAreaTopPos,
+      child: ClipPath(
+        clipper: SideToolsPanelClipper(
+          widthOffset: r.panelClipWidth,
+          dragAreaHeight: r.dragAreaHeight,
+          dragAreaTopPos: r.dragAreaTopPos,
+        ),
+        child: Stack(
+          children: [
+            BackdropFilter(
+              filter: ui.ImageFilter.blur(
+                sigmaX: 3.0,
+                sigmaY: 3.0,
               ),
-              child: BackdropFilter(
-                filter: ui.ImageFilter.blur(
-                  sigmaX: 3.0,
-                  sigmaY: 3.0,
-                ),
-                child: Container(
-                  alignment: Alignment.topRight,
-                  color: Colors.black.withOpacity(0.2),
-                  child: SizedBox(
-                      width: r.toolsAreaSize.width,
-                      height: r.toolsAreaSize.height,
-                      child: SidePanelToolButtonList(
-                        iconSize: r.toolsAreaSize.width / 2,
-                        splashRadius: 30.0,
-                        rippleShaderAsset: r.rippleShaderAsset,
-                        items: [
-                          SidePanelToolButtonModel(
-                            id: SidePanelToolButtonId.bars,
-                            icon: Icons.open_in_full_rounded,
-                          ),
-                          SidePanelToolButtonModel(
-                            id: SidePanelToolButtonId.fullscreen,
-                            icon: Icons.aspect_ratio_sharp,
-                          ),
-                          SidePanelToolButtonModel(
-                            id: SidePanelToolButtonId.brightness,
-                            icon: Icons.brightness_3_outlined,
-                          ),
-                          SidePanelToolButtonModel(
-                            id: SidePanelToolButtonId.constants,
-                            icon: Icons.contrast,
-                          ),
-                          SidePanelToolButtonModel(
-                            id: SidePanelToolButtonId.exposure,
-                            icon: Icons.exposure,
-                          ),
-                          SidePanelToolButtonModel(
-                            id: SidePanelToolButtonId.mono,
-                            icon: Icons.monochrome_photos,
-                          ),
-                        ],
-                      )),
+              child: Container(
+                alignment: Alignment.topRight,
+                color: Colors.black.withOpacity(0.2),
+                child: SizedBox(
+                    width: r.toolsAreaSize.width,
+                    height: r.toolsAreaSize.height,
+                    child: SidePanelToolButtonList(
+                      iconSize: r.toolsAreaSize.width / 2,
+                      splashRadius: 30.0,
+                      rippleShaderAsset: r.rippleShaderAsset,
+                      items: [
+                        SidePanelToolButtonModel(
+                          id: SidePanelToolButtonId.bars,
+                          icon: Icons.open_in_full_rounded,
+                        ),
+                        SidePanelToolButtonModel(
+                          id: SidePanelToolButtonId.fullscreen,
+                          icon: Icons.aspect_ratio_sharp,
+                        ),
+                        SidePanelToolButtonModel(
+                          id: SidePanelToolButtonId.brightness,
+                          icon: Icons.brightness_3_outlined,
+                        ),
+                        SidePanelToolButtonModel(
+                          id: SidePanelToolButtonId.constants,
+                          icon: Icons.contrast,
+                        ),
+                        SidePanelToolButtonModel(
+                          id: SidePanelToolButtonId.exposure,
+                          icon: Icons.exposure,
+                        ),
+                        SidePanelToolButtonModel(
+                          id: SidePanelToolButtonId.mono,
+                          icon: Icons.monochrome_photos,
+                        ),
+                      ],
+                    )),
+              ),
+            ),
+            Positioned(
+              top: r.dragHandleTopPos,
+              right: r.dragHandleRightPos,
+              child: GestureDetector(
+                dragStartBehavior: DragStartBehavior.down,
+                onHorizontalDragUpdate: onDrag,
+                onHorizontalDragEnd: onDragEnd,
+                onTap: onDragHandleTap,
+                child: DragHandle(
+                  color: Colors.grey.shade800,
+                  size: Size(r.dragHandleSize.width, r.dragHandleSize.height),
                 ),
               ),
             ),
-          ),
-          Positioned(
-            top: r.dragHandleTopPos,
-            right: r.dragHandleRightPos - panelDxOffset,
-            child: GestureDetector(
-              dragStartBehavior: DragStartBehavior.down,
-              onHorizontalDragUpdate: onDrag,
-              onHorizontalDragEnd: onDragEnd,
-              onTap: onDragHandleTap,
-              child: DragHandle(
-                color: Colors.grey.shade800,
-                size: Size(r.dragHandleSize.width, r.dragHandleSize.height),
-              ),
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
